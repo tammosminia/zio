@@ -27,7 +27,7 @@ def upload(name: String): Task[Unit] = {
 
 upload("contacts.csv").catchAll {
   case FileExist(name) => delete("contacts.csv") *> upload("contacts.csv")
-  case _ =>
+  case error =>
     for {
       _ <- ZIO.log(error.toString) // logging the error
       _ <- ZIO.fail(error) // failing again (just like rethrowing exceptions in OOP)
